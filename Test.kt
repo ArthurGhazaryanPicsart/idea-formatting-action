@@ -1,6 +1,1 @@
-class Test {
-  
-  fun test(){ 
-  }
-  
-}
+class Test{}
