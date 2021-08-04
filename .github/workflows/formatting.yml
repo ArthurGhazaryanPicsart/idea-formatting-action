@@ -28,7 +28,8 @@ jobs:
           echo "${{ steps.changed-files.outputs.all_modified_files }}"
       - name: Testing
         run: |
-          if (( ${#steps.changed-files.outputs.all_modified_files[@]} == 0 )); then
+          if [ -z ${ steps.changed-files.outputs.all_modified_files } ]
+          then
               echo "Nothing to format"
           else
              wget -nv https://download.jetbrains.com/idea/ideaIC-2021.1.2.tar.gz
@@ -39,7 +40,8 @@ jobs:
           fi
       - name: Commit files
         run: |
-          if (( ${#steps.changed-files.outputs.all_modified_files[@]} == 0 )); then
+          if [ -z ${ steps.changed-files.outputs.all_modified_files } ]
+          then
            echo "Nothing to format"
           else
            git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
