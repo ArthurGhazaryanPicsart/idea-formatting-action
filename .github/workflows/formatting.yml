@@ -8,6 +8,7 @@ jobs:
   formatting:
     runs-on: ubuntu-latest
     steps:
+      - uses: AutoModality/action-clean@v1
       - uses: actions/checkout@v2
         with:
           persist-credentials: false
@@ -22,18 +23,21 @@ jobs:
       #          pathInArchive: "idea-IU-211.7442.40/bin/idea.sh"
       - name: Testing
         run: |
-          wget -nv https://download.jetbrains.com/idea/ideaIC-2021.1.2.tar.gz
+          mkdir ideafolder 
+          wget -nv https://download.jetbrains.com/idea/ideaIC-2021.1.2.tar.gz -P ideafolder
+          cd ideafolder
           tar -xzf ideaIC-2021.1.2.tar.gz
           rm -rf ideaIC-2021.1.2.tar.gz
           cd idea-IC-211.7442.40/bin
-          ./idea.sh format ${{ github.workspace }}/presenter/src/main/java/com/picsart/search/ui/fragment/SearchResultBaseFragment.kt
+          ./idea.sh format ${{ github.workspace }}/Test.kt
       - name: Commit files
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
+          git status
           git commit -m "Format files" -a
       - name: Push changes
         uses: ad-m/github-push-action@v0.6.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+          branch: ${{ github.head_ref }}
