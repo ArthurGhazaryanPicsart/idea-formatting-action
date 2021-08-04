@@ -40,7 +40,7 @@ jobs:
           fi
       - name: Commit files
         run: |
-          if [ -z "${{ git diff --name-only HEAD }}" ]
+          if [ -z "$(git diff --name-only HEAD)" ]
           then
            echo "Nothing to format"
           else
