@@ -26,7 +26,7 @@ jobs:
           tar -xzf ideaIC-2021.1.2.tar.gz
           rm -rf ideaIC-2021.1.2.tar.gz
           cd idea-IC-211.7442.40/bin
-          ./idea.sh format ${{ github.workspace }}/presenter/src/main/java/com/picsart/search/ui/fragment/SearchResultBaseFragment.kt
+          ./idea.sh format ${{ github.workspace }}/Test.kt
       - name: Commit files
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
