@@ -20,6 +20,7 @@ jobs:
       - uses: tj-actions/changed-files@v9.1
         with:
           separator: " "
+      - name: List all added files
         run: |
           export DIFF="${{ steps.changed-files.outputs.all_modified_files }}"
           echo "::set-env name=DIFF::DIFF"
