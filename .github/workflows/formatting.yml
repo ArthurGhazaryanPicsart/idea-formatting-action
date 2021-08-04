@@ -3,14 +3,14 @@ name: Formatting IDEA
 on:
   pull_request:
     types: [ assigned, opened, synchronize, reopened, labeled ]
-    
+
 jobs:
   formatting:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0
+          fetch_depth: 0
       - uses: actions/setup-java@v1
         with:
           java-version: 1.8
@@ -33,12 +33,15 @@ jobs:
           if [ -z "${{ steps.changed-files.outputs.all_modified_files }}" ]
           then
               echo "Nothing to format"
-          else
+          elif [ ! -d "${{ github.workspace }}/idea-IC-211.7442.40" ]
+          then
              wget -nv https://download.jetbrains.com/idea/ideaIC-2021.1.2.tar.gz
              tar -xzf ideaIC-2021.1.2.tar.gz
-             rm -rf ideaIC-2021.1.2.tar.gz
+#             rm -rf ideaIC-2021.1.2.tar.gz
              idea_path="${{ github.workspace }}/idea-IC-211.7442.40/bin/idea.sh"
              ${{ github.workspace }}/idea-IC-211.7442.40/bin/idea.sh format ${{ steps.changed-files.outputs.all_modified_files }}
+          else 
+             echo "IDEA exists"  
           fi
       - name: Commit files
         run: |
@@ -49,10 +52,10 @@ jobs:
            git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
            git config --local user.name "github-actions[bot]"
            git commit -m "Format files with IDEA" -a
-           git pull origin "${GITHUB_REF}"
-          # fi
+          #fi
       - name: Push changes
         uses: ad-m/github-push-action@v0.6.0
         with:
+          force: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.head_ref }}
