@@ -22,15 +22,14 @@ jobs:
           separator: " "
       - name: List all added files
         run: |
-          export DIFF="${{ steps.changed-files.outputs.all_modified_files }}"
-          echo "::set-env name=DIFF::DIFF"
+          echo "changed_files=${{ steps.changed-files.outputs.all_modified_files }}" >> $GITHUB_ENV
       - name: Testing
         run: |
           wget -nv https://download.jetbrains.com/idea/ideaIC-2021.1.2.tar.gz
           tar -xzf ideaIC-2021.1.2.tar.gz
           rm -rf ideaIC-2021.1.2.tar.gz
           cd idea-IC-211.7442.40/bin
-          echo "$DIFF"
+          echo "${{ env.changed_files }}"
 #          git --no-pager diff --name-only FETCH_HEAD ${{ github.event.pull_request.base.sha }} | while read line;
 #          do
 #             echo "$line"
