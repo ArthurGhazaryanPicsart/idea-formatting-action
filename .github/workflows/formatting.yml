@@ -1,8 +1,8 @@
 name: Formatting IDEA
 
 on:
-  pull_request:
-    types: [ assigned, opened, synchronize, reopened, labeled ]
+  push:
+    branches: [ main ]
 
 jobs:
   formatting:
