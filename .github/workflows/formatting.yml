@@ -27,6 +27,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: intellij-artifact
+          path: ${{ github.workspace }}/idea-IC-211.7442.40
       - name: Download Intellij
         if: failure()
         run: |
