@@ -40,7 +40,7 @@ jobs:
           fi
       - name: Commit files
         run: |
-          if [ -z "${{ steps.changed-files.outputs.all_modified_files }}" ]
+          if [ -z "${{ git diff --name-only HEAD }}" ]
           then
            echo "Nothing to format"
           else
