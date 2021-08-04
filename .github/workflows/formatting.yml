@@ -23,7 +23,9 @@ jobs:
       #          pathInArchive: "idea-IU-211.7442.40/bin/idea.sh"
       - name: Testing
         run: |
-          wget -nv https://download.jetbrains.com/idea/ideaIC-2021.1.2.tar.gz
+          mkdir ideafolder 
+          wget -nv https://download.jetbrains.com/idea/ideaIC-2021.1.2.tar.gz -P ideafolder
+          cd idefolder
           tar -xzf ideaIC-2021.1.2.tar.gz
           rm -rf ideaIC-2021.1.2.tar.gz
           cd idea-IC-211.7442.40/bin
