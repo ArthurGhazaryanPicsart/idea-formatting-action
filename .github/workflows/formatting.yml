@@ -40,7 +40,6 @@ jobs:
               echo "Nothing to format"
           elif [ ! -d "${{ github.workspace }}/idea-IC-211.7442.40" ]
           then
-#             rm -rf ideaIC-2021.1.2.tar.gz
              idea_path="${{ github.workspace }}/idea-IC-211.7442.40/bin/idea.sh"
              ${{ github.workspace }}/idea-IC-211.7442.40/bin/idea.sh format ${{ steps.changed-files.outputs.all_modified_files }}
           else
