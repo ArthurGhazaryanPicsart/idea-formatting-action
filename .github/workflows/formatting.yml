@@ -17,19 +17,22 @@ jobs:
       #          name: "intellij"
       #          url: "https://download.jetbrains.com/idea/ideaIU-2021.1.2.tar.gz"
       #          pathInArchive: "idea-IU-211.7442.40/bin/idea.sh"
-      - uses: tj-actions/changed-files@v9.1
+      
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v9.1
         with:
           separator: " "
       - name: List all added files
         run: |
-          echo "changed_files=${{ steps.changed-files.outputs.all_modified_files }}" >> $GITHUB_ENV
+          echo "${{ steps.changed-files.outputs.all_modified_files }}"
       - name: Testing
         run: |
           wget -nv https://download.jetbrains.com/idea/ideaIC-2021.1.2.tar.gz
           tar -xzf ideaIC-2021.1.2.tar.gz
           rm -rf ideaIC-2021.1.2.tar.gz
           cd idea-IC-211.7442.40/bin
-          echo "${{ env.changed_files }}"
+          echo "${{ steps.changed-files.outputs.all_modified_files }}"
 #          git --no-pager diff --name-only FETCH_HEAD ${{ github.event.pull_request.base.sha }} | while read line;
 #          do
 #             echo "$line"
