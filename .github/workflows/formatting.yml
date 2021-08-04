@@ -1,9 +1,9 @@
 name: Formatting IDEA
 
 on:
-  push:
-    branches: [ main ]
-
+  pull_request:
+    types: [ assigned, opened, synchronize, reopened, labeled ]
+    
 jobs:
   formatting:
     runs-on: ubuntu-latest
