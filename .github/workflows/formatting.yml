@@ -28,7 +28,7 @@ jobs:
           echo "${{ steps.changed-files.outputs.all_modified_files }}"
       - name: Testing
         run: |
-          if [ -z ${ steps.changed-files.outputs.all_modified_files } ]
+          if [ -z "${ steps.changed-files.outputs.all_modified_files }" ]
           then
               echo "Nothing to format"
           else
@@ -40,7 +40,7 @@ jobs:
           fi
       - name: Commit files
         run: |
-          if [ -z ${ steps.changed-files.outputs.all_modified_files } ]
+          if [ -z "${ steps.changed-files.outputs.all_modified_files }" ]
           then
            echo "Nothing to format"
           else
