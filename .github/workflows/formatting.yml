@@ -35,8 +35,7 @@ jobs:
              wget -nv https://download.jetbrains.com/idea/ideaIC-2021.1.2.tar.gz
              tar -xzf ideaIC-2021.1.2.tar.gz
              rm -rf ideaIC-2021.1.2.tar.gz
-             cd idea-IC-211.7442.40/bin
-             idea-IC-211.7442.40/bin/idea.sh format "${{ steps.changed-files.outputs.all_modified_files }}"
+             ${{ github.workspace }}/idea-IC-211.7442.40/bin/idea.sh format "${{ steps.changed-files.outputs.all_modified_files }}"
           fi
       - name: Commit files
         run: |
