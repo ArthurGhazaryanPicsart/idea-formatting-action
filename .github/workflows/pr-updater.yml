@@ -1,0 +1,14 @@
+name: PR update
+
+on:
+    push:
+        branches: 
+            - main
+
+jobs:
+    autoupdate:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v2
+        - name: update all prs
+          run: bash .github/workflows/pull-request-update.sh "${{ secrets.GITHUB_TOKEN }}" "${{ secrets.USER_TOKEN }}"
