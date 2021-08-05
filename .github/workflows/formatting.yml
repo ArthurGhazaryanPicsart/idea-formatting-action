@@ -29,7 +29,7 @@ jobs:
         with:
           path: |
             ${{ github.workspace }}/idea-IC-211.7442.40
-          key: ${{ runner.os }}-intellij
+          key: ${{ runner.os }}-idea-IC-211.7442.40
           
       - name: Download Intellij
         if: steps.intellij-idea.outputs.cache-hit != 'true'
