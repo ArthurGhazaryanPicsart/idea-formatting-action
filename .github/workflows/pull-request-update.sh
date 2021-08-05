@@ -4,12 +4,14 @@ set -eou pipefail
 GITHUB_TOKEN="${1}"
 GITHUB_TOKEN_USER="${2}"
 
+echo "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/pulls?base=${GITHUB_REF#refs/heads/}"
+
 curl \
   --fail \
   --silent \
   --show-error \
   --request "GET" \
-  --url "https://api.github.com/repos/ArthurGhazaryanPicsArt/idea-formatting-action/pulls?base=main" \
+  --url "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/pulls?base=${GITHUB_REF#refs/heads/}" \
   --header "Authorization: token ${GITHUB_TOKEN}" \
   --output "pull-requests.json"
 
