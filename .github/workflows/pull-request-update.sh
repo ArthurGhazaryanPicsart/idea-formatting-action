@@ -4,6 +4,8 @@ set -eou pipefail
 GITHUB_TOKEN="${1}"
 GITHUB_TOKEN_USER="${2}"
 
+echo "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/pulls?base=${GITHUB_BASE_REF}"
+
 curl \
   --fail \
   --silent \
