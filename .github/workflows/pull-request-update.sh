@@ -9,7 +9,7 @@ curl \
   --silent \
   --show-error \
   --request "GET" \
-  --url "https://api.github.com/repos/ArthurGhazaryanPicsArt/idea-formatting-action/pulls?base=main" \
+  --url "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/pulls?base=${GITHUB_BASE_REF}" \
   --header "Authorization: token ${GITHUB_TOKEN}" \
   --output "pull-requests.json"
 
