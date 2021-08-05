@@ -1,5 +1,5 @@
 class Test {
-    //comment
+    //comment 1
     fun test(){
         println("test")
     }
