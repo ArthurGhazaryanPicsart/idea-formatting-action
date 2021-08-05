@@ -23,34 +23,37 @@ jobs:
       - name: List all added files
         run: |
           echo "${{ steps.changed-files.outputs.all_modified_files }}"
-      - name: Get Intellij artifact
-        uses: actions/download-artifact@v2
+      - name: Cache Intellij
+        id: intellij-idea
+        uses: actions/cache@v2
         with:
-          name: intellij-artifact
-          path: ${{ github.workspace }}/idea-IC-211.7442.40
+          path: |
+            ${{ github.workspace }}/idea-IC-211.7442.40
+          key: ${{ runner.os }}-intellij
+          
       - name: Download Intellij
-        if: failure()
+        if: steps.intellij-idea.outputs.cache-hit != 'true'
         run: |
           wget -nv https://download.jetbrains.com/idea/ideaIC-2021.1.2.tar.gz
           tar -xzf ideaIC-2021.1.2.tar.gz
           rm -rf ideaIC-2021.1.2.tar.gz
-      - name: Upload intellij artifact
-        uses: actions/upload-artifact@v2
-        with:
-            name: intellij-artifact
-            path: ${{ github.workspace }}/idea-IC-211.7442.40
-      - name: Testing
+          
+      - name: Formatting
         run: |
-               if [ -z "${{ steps.changed-files.outputs.all_modified_files }}" ]
-               then
-                echo "Nothing to format"
-               elif [ ! -d "${{ github.workspace }}/idea-IC-211.7442.40" ]
-               then
-               idea_path="${{ github.workspace }}/idea-IC-211.7442.40/bin/idea.sh"
-               ${{ github.workspace }}/idea-IC-211.7442.40/bin/idea.sh format ${{ steps.changed-files.outputs.all_modified_files }}
-               else
-               echo "IDEA exists"
-               fi
+          if [ -z "${{ steps.changed-files.outputs.all_modified_files }}" ]
+          then
+           echo "Nothing to format"
+          elif [ -d "${{ github.workspace }}/idea-IC-211.7442.40" ]
+          then
+#           wget -nv https://download.jetbrains.com/idea/ideaIC-2021.1.2.tar.gz
+#           tar -xzf ideaIC-2021.1.2.tar.gz
+#           rm -rf ideaIC-2021.1.2.tar.gz
+           echo "IDEA exists"
+           idea_path="${{ github.workspace }}/idea-IC-211.7442.40/bin/idea.sh"
+           ${{ github.workspace }}/idea-IC-211.7442.40/bin/idea.sh format ${{ steps.changed-files.outputs.all_modified_files }}
+          else
+           echo "IDEA not exists"
+          fi
       - name: Commit files
         run: |
           # if [ -z "$(git diff --name-only HEAD)" ]
