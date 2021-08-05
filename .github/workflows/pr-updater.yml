@@ -9,8 +9,6 @@ jobs:
     autoupdate:
         runs-on: ubuntu-latest
         steps:
-        - uses: actions/checkout@v1
+        - uses: actions/checkout@v2
         - name: update all prs
-          uses: maxkomarychev/pr-updater-action@v1.0.0
-          with:
-            token: ${{ secrets.USER_TOKEN }}
+          run: bash .github/workflows/pull-request-update.sh "${{ secrets.GITHUB_TOKEN }}" "${{ secrets.USER_TOKEN }}"
