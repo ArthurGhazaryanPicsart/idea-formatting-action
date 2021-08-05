@@ -1,6 +1,6 @@
 class Test {
 
-    fun test() {
+    fun test(){
     }
 
 }
