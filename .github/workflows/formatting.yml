@@ -18,11 +18,10 @@ jobs:
       - name: Get changed files
         id: changed-files
         uses: jitterbit/get-changed-files@v1
-        with:
-          format: " "
+      
       - name: List all added files
         run: |
-          echo "${{ steps.changed-files.outputs.all_modified_files }}"
+          echo "${{ steps.files.outputs.all }}"
       - name: Cache Intellij
         id: intellij-idea
         uses: actions/cache@v2
@@ -40,14 +39,14 @@ jobs:
           
       - name: Formatting
         run: |
-          if [ -z "${{ steps.changed-files.outputs.all_modified_files }}" ]
+          if [ -z "${{ steps.files.outputs.all }}" ]
           then
            echo "Nothing to format"
           elif [ -d "${{ github.workspace }}/idea-IC-211.7442.40" ]
           then
            echo "IDEA exists"
            idea_path="${{ github.workspace }}/idea-IC-211.7442.40/bin/idea.sh"
-           ${{ github.workspace }}/idea-IC-211.7442.40/bin/idea.sh format ${{ steps.changed-files.outputs.all_modified_files }}
+           ${{ github.workspace }}/idea-IC-211.7442.40/bin/idea.sh format ${{ steps.files.outputs.all }}
           else
            echo "IDEA not exists"
           fi
