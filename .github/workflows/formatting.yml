@@ -3,17 +3,12 @@ name: Formatting IDEA
 on:
   pull_request:
     types: [ assigned, opened, synchronize, reopened, labeled ]
-    
+
 jobs:
   formatting:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
       #      - uses: engineerd/configurator@v0.0.8
       #        with:
       #          name: "intellij"
@@ -25,33 +20,54 @@ jobs:
         uses: tj-actions/changed-files@v9.1
         with:
           separator: " "
-      - name: List all added files
+      #      - name: List all changed files
+      #        run: |
+      #          echo "${{ steps.changed-files.outputs.all_modified_files }}"
+      - name: Cache Intellij
+        id: intellij-idea
+        uses: actions/cache@v2
+        with:
+          path: |
+            ${{ github.workspace }}/idea-IC-211.7442.40
+          key: ${{ runner.os }}-idea-IC-211.7442.40
+
+      - name: Download Intellij
+        if: steps.intellij-idea.outputs.cache-hit != 'true'
         run: |
-          echo "${{ steps.changed-files.outputs.all_modified_files }}"
-      - name: Testing
+          wget -nv https://download.jetbrains.com/idea/ideaIC-2021.1.2.tar.gz
+          tar -xzf ideaIC-2021.1.2.tar.gz
+          rm -rf ideaIC-2021.1.2.tar.gz
+
+      - name: Formatting
         run: |
           if [ -z "${{ steps.changed-files.outputs.all_modified_files }}" ]
           then
-              echo "Nothing to format"
+           echo "Nothing to format"
+          elif [ -d "${{ github.workspace }}/idea-IC-211.7442.40" ]
+          then
+           echo "IDEA exists"
+           idea_path="${{ github.workspace }}/idea-IC-211.7442.40/bin/idea.sh"
+           ${{ github.workspace }}/idea-IC-211.7442.40/bin/idea.sh format ${{ steps.changed-files.outputs.all_modified_files }}
           else
-             wget -nv https://download.jetbrains.com/idea/ideaIC-2021.1.2.tar.gz
-             tar -xzf ideaIC-2021.1.2.tar.gz
-             rm -rf ideaIC-2021.1.2.tar.gz
-             idea_path="${{ github.workspace }}/idea-IC-211.7442.40/bin/idea.sh"
-             ${{ github.workspace }}/idea-IC-211.7442.40/bin/idea.sh format ${{ steps.changed-files.outputs.all_modified_files }}
+           echo "IDEA not exists"
           fi
       - name: Commit files
+        id: commit_files
         run: |
-          # if [ -z "$(git diff --name-only HEAD)" ]
-          # then
-          #  echo "Nothing to format"
-          # else
-           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-           git config --local user.name "github-actions[bot]"
-           git commit -m "Format files with IDEA" -a
-           git pull origin "${GITHUB_REF}"
-          # fi
+          if [ -z "$(git diff --name-only HEAD)" ]
+          then
+           echo ::set-output name=has_diff::false
+           echo "Nothing to format"
+          else
+          echo ::set-output name=has_diff::true
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git config --local pull.rebase false
+          git pull
+          git commit -m "Format files with IDEA" -a
+          fi
       - name: Push changes
+        if: steps.commit_files.outputs.has_diff == 'true'
         uses: ad-m/github-push-action@v0.6.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
