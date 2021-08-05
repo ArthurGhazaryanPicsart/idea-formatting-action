@@ -69,6 +69,5 @@ jobs:
         if: steps.commit_files.outputs.has_diff == 'true'
         uses: ad-m/github-push-action@v0.6.0
         with:
-          force: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.head_ref }}
