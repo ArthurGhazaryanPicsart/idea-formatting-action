@@ -4,12 +4,14 @@ set -eou pipefail
 GITHUB_TOKEN="${1}"
 GITHUB_TOKEN_USER="${2}"
 
+echo "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/pulls?base=${GITHUB_REF#refs/heads/}"
+
 curl \
   --fail \
   --silent \
   --show-error \
   --request "GET" \
-  --url "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/pulls?base=${GITHUB_BASE_REF}" \
+  --url "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/pulls?base=${GITHUB_REF#refs/heads/}" \
   --header "Authorization: token ${GITHUB_TOKEN}" \
   --output "pull-requests.json"
 
