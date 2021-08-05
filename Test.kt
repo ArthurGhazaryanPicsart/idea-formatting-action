@@ -1,4 +1,6 @@
 class Test {
-    fun test() {
-   }
+    //comment 1
+    fun test(){
+        println("test")
+    }
 }
