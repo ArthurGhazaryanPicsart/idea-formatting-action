@@ -24,7 +24,7 @@ jobs:
           separator: " "
       - name: List all changed files
         run: |
-          echo "$(git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | xargs)"
+          echo "$(git diff --name-only --diff-filter=ACMRT FETCH_HEAD ${{ github.sha }} | xargs)"
       - name: Cache Intellij
         id: intellij-idea
         uses: actions/cache@v2
