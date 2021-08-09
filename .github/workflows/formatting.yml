@@ -9,8 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
       #      - uses: engineerd/configurator@v0.0.8
       #        with:
       #          name: "intellij"
@@ -22,9 +20,9 @@ jobs:
         uses: tj-actions/changed-files@v9.1
         with:
           separator: " "
-      - name: List all changed files
-        run: |
-          echo "${{ steps.changed-files.outputs.all_modified_files }}"
+      #      - name: List all changed files
+      #        run: |
+      #          echo "${{ steps.changed-files.outputs.all_modified_files }}"
       - name: Cache Intellij
         id: intellij-idea
         uses: actions/cache@v2
@@ -52,23 +50,20 @@ jobs:
           else
            echo "IDEA not exists"
           fi
-      - name: Checkout to branch
-        uses: actions/checkout@v2
-        with:
-         ref: ${{ github.event.pull_request.head.ref }}
       - name: Commit files
         id: commit_files
         run: |
-          #if [ -z "$(git diff --name-only HEAD)" ]
-          #then
-           #echo ::set-output name=has_diff::false
-           #echo "Nothing to format"
-          #else
+          if [ -z "$(git diff --name-only HEAD)" ]
+          then
+           echo ::set-output name=has_diff::false
+           echo "Nothing to format"
+          else
           echo ::set-output name=has_diff::true
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git commit -m "Format files with IDEA"
-          #fi
+          git config --local pull.rebase false
+          git commit -m "Format files with IDEA" -a
+          fi
       - name: Push changes
         if: steps.commit_files.outputs.has_diff == 'true'
         uses: ad-m/github-push-action@v0.6.0
