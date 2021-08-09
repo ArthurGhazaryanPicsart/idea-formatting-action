@@ -56,7 +56,7 @@ jobs:
       - name: Commit files
         id: commit_files
         run: |
-          if [ -z "$(git diff --name-only HEAD) ]
+          if [ -z "$(git diff --name-only HEAD)" ]
           then
            echo ::set-output name=has_diff::false
            echo "Nothing to format"
