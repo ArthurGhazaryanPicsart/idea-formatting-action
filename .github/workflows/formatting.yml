@@ -72,10 +72,11 @@ jobs:
           --header "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
           --header "Accept: application/vnd.github.lydian-preview+json"
           git commit -m "Format files with IDEA" -a
+          git push -u origin HEAD
           fi
-      - name: Push changes
-        if: steps.commit_files.outputs.has_diff == 'true'
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.head_ref }}
+      #- name: Push changes
+      #  if: steps.commit_files.outputs.has_diff == 'true'
+      #  uses: ad-m/github-push-action@v0.6.0
+      #  with:
+      #    github_token: ${{ secrets.GITHUB_TOKEN }}
+      #    branch: ${{ github.head_ref }}
