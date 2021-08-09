@@ -39,7 +39,10 @@ jobs:
           wget -nv https://download.jetbrains.com/idea/ideaIC-2021.1.2.tar.gz
           tar -xzf ideaIC-2021.1.2.tar.gz
           rm -rf ideaIC-2021.1.2.tar.gz
-
+      - name: Checkout to branch
+        uses: actions/checkout@v2
+        with:
+         ref: ${{ github.event.pull_request.head.ref }}
       - name: Formatting
         run: |
           if [ -z "${{ steps.changed-files.outputs.all_modified_files }}" ]
