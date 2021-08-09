@@ -56,16 +56,16 @@ jobs:
       - name: Commit files
         id: commit_files
         run: |
-          if [ -z "$(git diff --name-only HEAD)" ]
-          then
-           echo ::set-output name=has_diff::false
-           echo "Nothing to format"
-          else
+          #if [ -z "$(git diff --name-only HEAD)" ]
+          #then
+           #echo ::set-output name=has_diff::false
+           #echo "Nothing to format"
+          #else
           echo ::set-output name=has_diff::true
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git commit -m "Format files with IDEA"
-          fi
+          #fi
       - name: Push changes
         if: steps.commit_files.outputs.has_diff == 'true'
         uses: ad-m/github-push-action@v0.6.0
