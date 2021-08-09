@@ -63,7 +63,14 @@ jobs:
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git config --local pull.rebase false
-          git pull
+          echo ":: Updating PR #${{ github.event.number }}..."
+          curl \
+          --silent \
+          --show-error \
+          --request "PUT" \
+          --url "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/pulls/${{ github.event.number }}/update-branch" \
+          --header "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          --header "Accept: application/vnd.github.lydian-preview+json"
           git commit -m "Format files with IDEA" -a
           fi
       - name: Push changes
