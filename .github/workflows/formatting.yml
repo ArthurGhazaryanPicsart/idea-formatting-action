@@ -8,9 +8,12 @@ jobs:
   formatting:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-        with: 
-         fetch-depth: 0
+      - uses: actions/checkout@master
+        with:
+         ref: ${{ github.event.pull_request.base.sha }}
+      - uses: actions/checkout@master
+        with:
+         ref: ${{ github.event.pull_request.head.sha }}
       #      - uses: engineerd/configurator@v0.0.8
       #        with:
       #          name: "intellij"
@@ -55,7 +58,7 @@ jobs:
       - name: Commit files
         id: commit_files
         run: |
-          git --no-pager diff --name-status --no-color --cached
+          git --no-pager diff --name-only FETCH_HEAD ${{ github.event.pull_request.base.sha }}
           if [ -z "$(git diff --name-only HEAD)" ]
           then
            echo ::set-output name=has_diff::false
