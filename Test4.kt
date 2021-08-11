@@ -1,3 +1,3 @@
-class Test4{
- fun tesT() = Unit
+class Test4 {
+    fun tesT() = Unit
 }
