@@ -58,8 +58,8 @@ jobs:
       - name: Commit files
         id: commit_files
         run: |
-          git --no-pager diff --name-only FETCH_HEAD ${{ github.event.pull_request.base.sha }}
-          if [ -z "$(git diff --name-only HEAD)" ]
+          CHANGED_FILES=$(git --no-pager diff --name-only FETCH_HEAD ${{ github.event.pull_request.base.sha }} | tr '\n' ' ' | sed 's/\(.*\),/\1 /')
+          if [ -z "$CHANGED_FILES)" ]
           then
            echo ::set-output name=has_diff::false
            echo "Nothing to format"
