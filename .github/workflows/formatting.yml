@@ -23,7 +23,7 @@ jobs:
       - name: Get changed files
         id: changed-files
         run: |
-          git --no-pager diff --name-only FETCH_HEAD ${{ github.event.pull_request.base.sha }}          
+          git --no-pager diff --name-only FETCH_HEAD ${{ github.event.pull_request.base.sha }} | tr '\n' ' ' | sed 's/\(.*\),/\1 /'         
       #      - name: List all changed files
       #        run: |
       #          echo "${{ steps.changed-files.outputs.all_modified_files }}"
