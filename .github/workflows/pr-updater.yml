@@ -3,7 +3,6 @@ name: Android CI
 on:
   pull_request:
     paths:
-      - .github/workflows/detekt-check.yml
       - '**.kt'
 
 jobs:
@@ -17,7 +16,6 @@ jobs:
   detekt:
     needs: [ cleanup-runs ]
     runs-on: ubuntu-latest
-    if: github.base_ref == 'master'
     steps:
       - name: Checkout repository
         uses: actions/checkout@master
