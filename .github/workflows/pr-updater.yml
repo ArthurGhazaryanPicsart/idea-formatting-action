@@ -31,7 +31,7 @@ jobs:
         id: changed_files
         uses: jitterbit/get-changed-files@v1
         with:
-          format: '\n'
+          format: 'space-delimited'
       - name: "Detekt check"
         id: detekt-check
         run: |
