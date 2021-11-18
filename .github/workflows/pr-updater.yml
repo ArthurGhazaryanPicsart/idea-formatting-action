@@ -30,8 +30,8 @@ jobs:
           path: ~/.gradle/wrapper/
           key: cache-gradle-wrapper
       - name: Get all changed files
-        uses: dorny/paths-filter@v2
         id: filter
+        uses: dorny/paths-filter@v2
         with:
           filters: |
               kotlin:
