@@ -37,12 +37,12 @@ jobs:
         # dictionary, where the type of change composes the key.
         # Multiple change types can be specified using `|` as the delimiter.
          filters: |
-          addedOrModified:
+          kotlin:
             - added|modified: '*.kt'
       - name: "Detekt check"
         id: detekt-check
         run: |
-          echo ${{ steps.changed_files.outputs.addedOrModified }}
+          echo ${{ steps.changed_files.outputs.kotlin_files }}
           # "$(git --no-pager diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} |  awk '$1 != "D" && $NF ~ /\.kts?$/ { print $NF }')"
           if [ -z "$CHANGED_FILES" ]; then
                  echo "No Kotlin staged files."
