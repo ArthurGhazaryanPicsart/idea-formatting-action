@@ -31,6 +31,7 @@ jobs:
         id: changed_files
         uses: dorny/paths-filter@v2
         with:
+         list-files: shell
         # Changed file can be 'added', 'modified', or 'deleted'.
         # By default, the type of change is not considered.
         # Optionally, it's possible to specify it using nested
