@@ -43,8 +43,10 @@ jobs:
       - name: "Detekt check"
         id: detekt-check
         run: |
-          echo ${{ steps.changed_files.outputs.kotlin_files }}
-          # "$(git --no-pager diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} |  awk '$1 != "D" && $NF ~ /\.kts?$/ { print $NF }')"
+          CHANGED_FILES="$(${{ steps.changed_files.outputs.kotlin_files }} | tr " " "\n")"
+          echo "$CHANGED_FILES"
+          #echo ${{ steps.changed_files.outputs.kotlin_files }}
+          #echo "$(${{ steps.changed_files.outputs.kotlin_files }} | awk { print $1 }')"
           if [ -z "$CHANGED_FILES" ]; then
                  echo "No Kotlin staged files."
                  exit 0
