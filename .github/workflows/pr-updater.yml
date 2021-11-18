@@ -39,7 +39,7 @@ jobs:
         # Multiple change types can be specified using `|` as the delimiter.
          filters: |
           kotlin:
-            - added|modified: '*.kt'
+            - added|modified: '**.kt'
       - name: "Detekt check"
         id: detekt-check
         run: |
