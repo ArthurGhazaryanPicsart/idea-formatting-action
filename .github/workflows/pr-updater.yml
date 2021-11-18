@@ -29,13 +29,20 @@ jobs:
           key: cache-gradle-wrapper
       - name: Get all changed files
         id: changed_files
-        uses: jitterbit/get-changed-files@v1
+        uses: dorny/paths-filter@v2
         with:
-          format: 'space-delimited'
+        # Changed file can be 'added', 'modified', or 'deleted'.
+        # By default, the type of change is not considered.
+        # Optionally, it's possible to specify it using nested
+        # dictionary, where the type of change composes the key.
+        # Multiple change types can be specified using `|` as the delimiter.
+         filters: |
+          addedOrModified:
+            - added|modified: '*.kt'
       - name: "Detekt check"
         id: detekt-check
         run: |
-          echo ${{ steps.changed_files.outputs.all }}
+          echo ${{ steps.changed_files.outputs.addedOrModified }}
           # "$(git --no-pager diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} |  awk '$1 != "D" && $NF ~ /\.kts?$/ { print $NF }')"
           if [ -z "$CHANGED_FILES" ]; then
                  echo "No Kotlin staged files."
