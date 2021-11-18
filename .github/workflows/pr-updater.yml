@@ -30,22 +30,20 @@ jobs:
           path: ~/.gradle/wrapper/
           key: cache-gradle-wrapper
       - name: Get all changed files
-        id: filter
-        uses: dorny/paths-filter@v2
+        id: changed_files
+        uses: jitterbit/get-changed-files@v1
         with:
-          filters: |
-              kotlin:
-                - added|modified: '*.kt'
+          format: '\n'
       - name: "Detekt check"
         id: detekt-check
         run: |
-          CHANGED_FILES=${{ steps.filter.outputs.markdown_files }}
+          echo ${{ steps.changed_files.outputs.all }}
           # "$(git --no-pager diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} |  awk '$1 != "D" && $NF ~ /\.kts?$/ { print $NF }')"
           if [ -z "$CHANGED_FILES" ]; then
                  echo "No Kotlin staged files."
                  exit 0
              fi;
-          echo "$CHANGED_FILES"
+          #echo "$CHANGED_FILES"
           #./gradlew detektChangedFiles -PinputFiles="$CHANGED_FILES" -PignoreFailures=true
           #echo "::set-output name=detekt_report_file::$([ -f build/reports/detekt.xml ] && echo true || echo false)"
       - name: "Install reviewdog"
