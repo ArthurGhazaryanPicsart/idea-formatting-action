@@ -43,7 +43,7 @@ jobs:
       - name: "Detekt check"
         id: detekt-check
         run: |
-          CHANGED_FILES="$(${{ steps.changed_files.outputs.kotlin_files }} | tr " " "\n")"
+          CHANGED_FILES=(${{ steps.changed_files.outputs.kotlin_files }} | tr " " "\n")
           echo "$CHANGED_FILES"
           #echo ${{ steps.changed_files.outputs.kotlin_files }}
           #echo "$(${{ steps.changed_files.outputs.kotlin_files }} | awk { print $1 }')"
