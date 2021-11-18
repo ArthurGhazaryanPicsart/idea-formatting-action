@@ -2,9 +2,6 @@ name: Android CI
 
 on:
   pull_request:
-    paths:
-      - .github/workflows/detekt-check.yml
-      - '**.kt'
 
 jobs:
   cleanup-runs:
@@ -17,7 +14,6 @@ jobs:
   detekt:
     needs: [ cleanup-runs ]
     runs-on: ubuntu-latest
-    if: github.base_ref == 'master'
     steps:
       - name: Checkout repository
         uses: actions/checkout@master
@@ -32,22 +28,30 @@ jobs:
           path: ~/.gradle/wrapper/
           key: cache-gradle-wrapper
       - name: Get all changed files
+        id: changed_files
         uses: dorny/paths-filter@v2
-        id: filter
         with:
-          filters: |
-              kotlin:
-                - added|modified: '*.kt'
+         list-files: shell
+        # Changed file can be 'added', 'modified', or 'deleted'.
+        # By default, the type of change is not considered.
+        # Optionally, it's possible to specify it using nested
+        # dictionary, where the type of change composes the key.
+        # Multiple change types can be specified using `|` as the delimiter.
+         filters: |
+          kotlin:
+            - added|modified: '**.kt'
       - name: "Detekt check"
         id: detekt-check
         run: |
-          CHANGED_FILES=${{ steps.filter.outputs.markdown_files }}
-          # "$(git --no-pager diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} |  awk '$1 != "D" && $NF ~ /\.kts?$/ { print $NF }')"
+          CHANGED_FILES=`echo ${{ steps.changed_files.outputs.kotlin_files }} | tr " " "\n"`
+          echo "$CHANGED_FILES"
+          #echo ${{ steps.changed_files.outputs.kotlin_files }}
+          #echo "$(${{ steps.changed_files.outputs.kotlin_files }} | awk { print $1 }')"
           if [ -z "$CHANGED_FILES" ]; then
                  echo "No Kotlin staged files."
                  exit 0
              fi;
-          echo "$CHANGED_FILES"
+          #echo "$CHANGED_FILES"
           #./gradlew detektChangedFiles -PinputFiles="$CHANGED_FILES" -PignoreFailures=true
           #echo "::set-output name=detekt_report_file::$([ -f build/reports/detekt.xml ] && echo true || echo false)"
       - name: "Install reviewdog"
